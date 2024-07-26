@@ -8,10 +8,21 @@ import {
   PaperProvider,
   Switch,
   Text,
+  MD3LightTheme as DefaultTheme,
 } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Location from "expo-location";
 import { getAllLocations, insertLocation } from "./db";
+import myColors from "./assets/colors.json";
+import myColorsDark from "./assets/colorsDark.json";
+
+const themeDark = {
+  ...DefaultTheme,
+  // Specify custom property
+  myOwnProperty: true,
+  // Specify custom property in nested object
+  colors: myColorsDark.colors,
+};
 
 export default function App() {
   const [isSwitchOn, setIsSwitchOn] = useState(false);
@@ -19,10 +30,19 @@ export default function App() {
   const [locations, setLocations] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
+  // Tema do RN PAPER
+  // https://callstack.github.io/react-native-paper/docs/guides/theming/#creating-dynamic-theme-colors
+  const [theme, setTheme] = useState({
+    ...DefaultTheme,
+    // Specify custom property
+    myOwnProperty: true,
+    // Specify custom property in nested object
+    colors: myColors.colors,
+  });
+
   // darkMode
   async function loadDarkMode() {
     const darkMode = await AsyncStorage.getItem("@darkMode");
-    console.log(darkMode);
     setIsSwitchOn(darkMode == "1" ? true : false);
   }
 
@@ -60,10 +80,19 @@ export default function App() {
     loadLocations();
   }, []);
 
+  // Efetiva a alteração do tema dark/light
+  useEffect(() => {
+    if (isSwitchOn) {
+      setTheme({ ...theme, colors: myColorsDark.colors });
+    } else {
+      setTheme({ ...theme, colors: myColors.colors });
+    }
+  }, [isSwitchOn]);
+
   return (
-    <PaperProvider>
+    <PaperProvider theme={theme}>
       <Appbar.Header>
-        <Appbar.Content title="Persisência RN" />
+        <Appbar.Content title="Persistência RN" />
       </Appbar.Header>
       <View style={styles.containerDarkMode}>
         <Text>Dark Mode</Text>
