@@ -94,30 +94,32 @@ export default function App() {
       <Appbar.Header>
         <Appbar.Content title="Persistência RN" />
       </Appbar.Header>
-      <View style={styles.containerDarkMode}>
-        <Text>Dark Mode</Text>
-        <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
-      </View>
-      <Button
-        style={styles.containerButton}
-        icon="map"
-        mode="contained"
-        loading={isLoading}
-        onPress={() => getLocation()}
-      >
-        Capturar localização
-      </Button>
+      <View style={{ backgroundColor: theme.colors.background }}>
+        <View style={styles.containerDarkMode}>
+          <Text>Dark Mode</Text>
+          <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />
+        </View>
+        <Button
+          style={styles.containerButton}
+          icon="map"
+          mode="contained"
+          loading={isLoading}
+          onPress={() => getLocation()}
+        >
+          Capturar localização
+        </Button>
 
-      <FlatList
-        style={styles.containerList}
-        data={locations}
-        renderItem={({ item }) => (
-          <List.Item
-            title="localização"
-            description={`Latitude: ${item.latitude} | Longitude: ${item.longitude}`}
-          ></List.Item>
-        )}
-      ></FlatList>
+        <FlatList
+          style={styles.containerList}
+          data={locations}
+          renderItem={({ item }) => (
+            <List.Item
+              title="localização"
+              description={`Latitude: ${item.latitude} | Longitude: ${item.longitude}`}
+            ></List.Item>
+          )}
+        ></FlatList>
+      </View>
     </PaperProvider>
   );
 }
@@ -140,5 +142,6 @@ const styles = StyleSheet.create({
   },
   containerList: {
     margin: 10,
+    height: "100%",
   },
 });
